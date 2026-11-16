@@ -1,0 +1,51 @@
+[package]
+name = "fluxscope"
+version = "2.0.0"
+description = "FluxScope — High-Performance Motor Control Oscilloscope & Post-Analysis Workbench"
+authors = ["ChengJia <ccdccd999@163.com>"]
+license = "MIT"
+repository = "https://github.com/ChengJiaAI/FluxScope"
+edition = "2021"
+default-run = "FluxScope"
+
+[lib]
+name = "fluxscope_core"
+path = "src/lib.rs"
+
+[[bin]]
+name = "FluxScope"
+path = "src/main.rs"
+
+[build-dependencies]
+tauri-build = { version = "2", features = [] }
+
+[dependencies]
+tauri = { version = "2", features = [] }
+serde = { version = "1", features = ["derive"] }
+serde_json = "1"
+serialport = { version = "4.6", default-features = false }
+rustfft = "6.2"
+tiny_http = "0.12"
+base64 = "0.22"
+
+[features]
+default = []
+custom-protocol = ["tauri/custom-protocol"]
+live-ui = []
+
+[profile.fast]
+inherits = "dev"
+opt-level = 1
+debug = 0
+lto = false
+codegen-units = 16
+incremental = true
+
+[profile.fast.package."*"]
+opt-level = 2
+
+[profile.release]
+opt-level = 3
+lto = "thin"
+codegen-units = 1
+strip = "symbols"

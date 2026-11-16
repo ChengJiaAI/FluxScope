@@ -1,0 +1,1054 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>FluxScope</title>
+  <link rel="icon" type="image/png" href="favicon.png" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Pure Monochrome Vector Icon Sprite (Zero Emoji) -->
+  <svg style="display:none" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="ic-wave" viewBox="0 0 24 24"><polyline points="2 12 6 12 9 4 15 20 18 12 22 12"/></symbol>
+    <symbol id="ic-layers" viewBox="0 0 24 24"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></symbol>
+    <symbol id="ic-sliders" viewBox="0 0 24 24"><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></symbol>
+    <symbol id="ic-terminal" viewBox="0 0 24 24"><polyline points="4 17 10 11 4 5"/><line x1="12" y1="19" x2="20" y2="19"/></symbol>
+    <symbol id="ic-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+    <symbol id="ic-plug" viewBox="0 0 24 24"><path d="M12 22v-5"/><path d="M9 8V2"/><path d="M15 8V2"/><path d="M18 8v5a4 4 0 0 1-4 4h-4a4 4 0 0 1-4-4V8Z"/></symbol>
+    <symbol id="ic-folder" viewBox="0 0 24 24"><path d="M22 19a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h5l2 3h9a2 2 0 0 1 2 2z"/></symbol>
+    <symbol id="ic-play" viewBox="0 0 24 24"><polygon points="5 3 19 12 5 21 5 3"/></symbol>
+    <symbol id="ic-pause" viewBox="0 0 24 24"><rect x="6" y="4" width="4" height="16"/><rect x="14" y="4" width="4" height="16"/></symbol>
+    <symbol id="ic-maximize" viewBox="0 0 24 24"><polyline points="15 3 21 3 21 9"/><polyline points="9 21 3 21 3 15"/><line x1="21" y1="3" x2="14" y2="10"/><line x1="3" y1="21" x2="10" y2="14"/></symbol>
+    <symbol id="ic-trash" viewBox="0 0 24 24"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></symbol>
+    <symbol id="ic-cursors" viewBox="0 0 24 24"><line x1="7" y1="3" x2="7" y2="21"/><line x1="17" y1="3" x2="17" y2="21"/><polyline points="10 9 7 12 10 15"/><polyline points="14 9 17 12 14 15"/></symbol>
+    <symbol id="ic-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><line x1="20" y1="4" x2="8.12" y2="15.88"/><line x1="14.47" y1="14.48" x2="20" y2="20"/><line x1="8.12" y1="8.12" x2="12" y2="12"/></symbol>
+    <symbol id="ic-download" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></symbol>
+    <symbol id="ic-lock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></symbol>
+    <symbol id="ic-unlock" viewBox="0 0 24 24"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 9.9-1"/></symbol>
+    <symbol id="ic-sidebar" viewBox="0 0 24 24"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="15" y1="3" x2="15" y2="21"/></symbol>
+    <symbol id="ic-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></symbol>
+    <symbol id="ic-moon" viewBox="0 0 24 24"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></symbol>
+    <symbol id="ic-plus" viewBox="0 0 24 24"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></symbol>
+    <symbol id="ic-copy" viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></symbol>
+    <symbol id="ic-align" viewBox="0 0 24 24"><line x1="4" y1="4" x2="4" y2="20"/><polyline points="10 8 6 12 10 16"/><line x1="6" y1="12" x2="20" y2="12"/></symbol>
+    <symbol id="ic-replay" viewBox="0 0 24 24"><polyline points="1 4 1 10 7 10"/><path d="M3.51 15a9 9 0 1 0 2.13-9.36L1 10"/></symbol>
+    <symbol id="ic-origin" viewBox="0 0 24 24"><line x1="5" y1="4" x2="5" y2="20"/><polygon points="10 6 20 12 10 18 10 6"/></symbol>
+    <symbol id="ic-info" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></symbol>
+  </svg>
+
+  <div class="app-shell" id="appRoot">
+    <!-- Top Single-Row Instrument Bar -->
+    <header class="topbar">
+      <div class="tb-group">
+        <button class="btn" id="btnQuickConnect" title="一键连接/断开通信链路（未选端口时跳转至左侧连接页）">
+          <span class="led-dot" id="ledSerial"></span>
+          <span id="lblQuickConn">未连接</span>
+        </button>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <button class="btn" id="btnOpenCsv" title="秒级打开 VOFA+ CSV 文件">
+          <svg class="svg-ic"><use href="#ic-folder"/></svg>
+          <span>打开CSV</span>
+        </button>
+        <button class="btn" id="btnReplayCsv" title="选择 CSV 文件按设定时间流速回放">
+          <svg class="svg-ic"><use href="#ic-play"/></svg>
+          <span>流回放</span>
+        </button>
+        <button class="btn btn-icon" id="btnClear" title="清空当前波形缓冲">
+          <svg class="svg-ic"><use href="#ic-trash"/></svg>
+        </button>
+        <select id="selReplaySpeed" style="width:64px" title="流回放时间倍速（回放中可随时无感变速）">
+          <option value="0.1">0.1x</option>
+          <option value="0.2">0.2x</option>
+          <option value="0.5">0.5x</option>
+          <option value="1" selected>1.0x</option>
+          <option value="2">2.0x</option>
+          <option value="5">5.0x</option>
+          <option value="10">10.0x</option>
+          <option value="custom">自定义</option>
+        </select>
+        <span id="wrapCustomReplaySpeed" style="display:none;align-items:center;gap:3px">
+          <input type="number" id="inpCustomReplaySpeed" class="mono" value="1.5" min="0.01" max="100" step="0.1" style="width:54px" title="输入自定义倍速 (0.01 ~ 100) 回车生效" />
+          <span class="tb-label">x</span>
+        </span>
+        <button class="btn" id="btnPause" title="暂停 / 继续刷新与回放 (快捷键 Space)">
+          <svg class="svg-ic" id="icPauseBtn"><use href="#ic-pause"/></svg>
+          <span id="lblPause">暂停</span>
+        </button>
+        <div class="replay-split-wrap" id="replayOriginWrap">
+          <button class="btn replay-main-btn" id="btnRestartReplay" title="从右侧设定的起点重新开始回放当前 CSV">
+            <svg class="svg-ic"><use href="#ic-replay"/></svg>
+            <span>重播</span>
+          </button>
+          <button class="btn replay-origin-btn mono" id="btnReplayOrigin" title="选择重播起点（0秒 / 游标 T1 / 游标 T2）">
+            <svg class="svg-ic" style="width:12px;height:12px"><use href="#ic-origin"/></svg>
+            <span id="lblReplayOrigin">0秒</span>
+          </button>
+          <div class="mini-pop-menu" id="menuReplayOrigin">
+            <button class="mini-pop-item active" data-origin="zero"><span class="mono">0秒</span><span class="tb-label">从头开始</span></button>
+            <button class="mini-pop-item" data-origin="t1"><span class="mono" style="color:var(--cursor-t1)">T1</span><span class="tb-label">从 T1 处</span></button>
+            <button class="mini-pop-item" data-origin="t2"><span class="mono" style="color:var(--cursor-t2)">T2</span><span class="tb-label">从 T2 处</span></button>
+          </div>
+        </div>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <span class="tb-label">工况</span>
+        <select id="selMode" style="width:118px">
+          <option value="normal">电机正常运行</option>
+          <option value="motor_id">电机参数辨识</option>
+        </select>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <button class="btn" id="btnFitAll" title="全屏自适应缩放 (双击画布亦可复位)">
+          <svg class="svg-ic"><use href="#ic-maximize"/></svg>
+          <span>自适应</span>
+        </button>
+      </div>
+
+      <div class="tb-sep"></div>
+
+      <div class="tb-group">
+        <button class="btn is-active" id="btnCursors" title="显示/隐藏 [T1, T2] 双游标卡尺">
+          <svg class="svg-ic"><use href="#ic-cursors"/></svg>
+          <span>双游标</span>
+        </button>
+        <button class="btn" id="btnCutSlice" title="将 [T1, T2] 游标选区切入静态分析库">
+          <svg class="svg-ic"><use href="#ic-scissors"/></svg>
+          <span>切入分析</span>
+        </button>
+        <button class="btn" id="btnExportSliceCsv" title="仅导出 [T1, T2] 选区内的波形为 CSV（带精确 time_s 时基列）">
+          <svg class="svg-ic"><use href="#ic-download"/></svg>
+          <span>导出选区</span>
+        </button>
+      </div>
+
+      <div class="tb-spacer"></div>
+
+      <div class="tb-group">
+        <button class="btn" id="btnMcpStatus" title="MCP 服务状态（点击跳转至终端页查看详情）">
+          <span class="led-dot" id="ledMcpTop"></span>
+          <span id="lblMcpTop">MCP</span>
+        </button>
+        <button class="btn" id="btnLockLayout" title="锁定后禁止拖动分屏条与侧栏控件，防止看波时误触">
+          <svg class="svg-ic" id="icLock"><use href="#ic-lock"/></svg>
+          <span id="lblLock">布局已锁</span>
+        </button>
+        <button class="btn btn-icon" id="btnToggleTheme" title="切换深灰 / 浅白主题">
+          <svg class="svg-ic" id="icTheme"><use href="#ic-sun"/></svg>
+        </button>
+        <button class="btn is-active" id="btnToggleDrawer" title="收起/呼出右侧实时数值与通道抽屉 (快捷键 Tab)">
+          <svg class="svg-ic"><use href="#ic-sidebar"/></svg>
+          <span>侧栏</span>
+        </button>
+      </div>
+    </header>
+
+    <div class="workspace-body">
+      <!-- Left Narrow Activity Rail -->
+      <nav class="nav-rail">
+        <button class="rail-btn active" data-page="scope" title="实时示波主画布">
+          <svg class="svg-ic"><use href="#ic-wave"/></svg>
+          <span>示波</span>
+        </button>
+        <button class="rail-btn" data-page="conn" title="端口 · 波特率 · VOFA+ 多协议连接配置">
+          <svg class="svg-ic"><use href="#ic-plug"/></svg>
+          <span>连接</span>
+          <span class="rail-dot" id="railConnDot"></span>
+        </button>
+        <button class="rail-btn" data-page="lab" title="多维叠图 · 阶跃整定 · 频谱谐波 · 离线滤波 · 轨迹静态分析台">
+          <svg class="svg-ic"><use href="#ic-layers"/></svg>
+          <span>分析</span>
+        </button>
+        <button class="rail-btn" data-page="config" title="运行与保护解码 · 硬件通道绑定 · 派生公式配置">
+          <svg class="svg-ic"><use href="#ic-sliders"/></svg>
+          <span>通道</span>
+        </button>
+        <button class="rail-btn" data-page="terminal" title="电机参数辨识 · 状态书签 · AI/MCP 互联">
+          <svg class="svg-ic"><use href="#ic-terminal"/></svg>
+          <span>终端</span>
+        </button>
+        <div style="flex:1"></div>
+        <button class="rail-btn" data-page="about" title="软件说明 · 交互操作指南 · 技术支持">
+          <svg class="svg-ic"><use href="#ic-info"/></svg>
+          <span>说明</span>
+        </button>
+      </nav>
+
+      <!-- 6 Dedicated Spacious Pages -->
+      <main class="pages-host">
+        <!-- ================= PAGE 1: OSCILLOSCOPE ================= -->
+        <section class="page-view active" id="page-scope">
+          <div class="scope-main">
+            <div class="scope-subbar">
+              <button class="btn" id="btnMarkT1" style="height:22px;padding:0 7px;font-size:11px">[ 打起点 T1</button>
+              <button class="btn" id="btnMarkT2" style="height:22px;padding:0 7px;font-size:11px">打终点 T2 ]</button>
+              <span class="cursor-readout-pill mono" id="lblCursorDelta">T1: 0.000s  |  T2: 1.000s  |  ΔT: 1.000s (1.00 Hz)</span>
+              <div class="tb-spacer"></div>
+              <div id="motorIdQuickBar" style="display:none;align-items:center;gap:5px">
+                <span class="tb-label" style="color:var(--warn)">辨识指令:</span>
+                <button class="btn" data-quick-tx="ID&#10;" style="height:22px">启动辨识 (ID)</button>
+                <button class="btn" data-quick-tx="ID?&#10;" style="height:22px">查询结果 (ID?)</button>
+                <button class="btn btn-danger-outline" data-quick-tx="C" style="height:22px">中止/清故障 (C)</button>
+              </div>
+              <button class="btn" id="btnAddPlotQuick" style="height:22px;padding:0 7px;font-size:11px" title="需先在右上角解锁布局">
+                <svg class="svg-ic" style="width:12px;height:12px"><use href="#ic-plus"/></svg>
+                <span>新增波形窗</span>
+              </button>
+            </div>
+
+            <div class="plots-stack" id="plotsStack"></div>
+          </div>
+        </section>
+
+        <!-- ================= DEDICATED CONNECTION & PROTOCOL PAGE ================= -->
+        <section class="page-view conn-page" id="page-conn">
+          <div class="conn-col">
+            <div class="panel-card">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title">物理接口与链路参数</span>
+                <div class="seg-tabs" id="connIfaceTabs">
+                  <button class="seg-tab active" data-iface="serial">串口通信 (Serial)</button>
+                  <button class="seg-tab" data-iface="udp">UDP 本地监听</button>
+                  <button class="seg-tab" data-iface="tcp">TCP 客户端</button>
+                </div>
+              </div>
+
+              <div style="padding:14px;display:flex;flex-direction:column;gap:12px">
+                <!-- Serial UART Settings -->
+                <div id="connSerialBox" style="display:flex;flex-direction:column;gap:12px">
+                  <div class="field-col">
+                    <span class="tb-label">通信端口 (显示完整芯片与驱动描述)</span>
+                    <div style="display:flex;gap:6px">
+                      <select id="selPort" style="flex:1"></select>
+                      <button class="btn" id="btnRefreshPorts" title="重新扫描系统串口">
+                        <svg class="svg-ic"><use href="#ic-refresh"/></svg>
+                        <span>刷新端口</span>
+                      </button>
+                    </div>
+                  </div>
+
+                  <div class="field-col">
+                    <span class="tb-label">波特率 (支持标准及任意非标高波特率，如 DSP/STM32 常用 468750 / 2000000)</span>
+                    <input type="text" id="inpBaud" class="mono" value="460800" />
+                    <div class="baud-chips" id="baudChips">
+                      <button class="chip-btn mono" data-baud="115200">115200</button>
+                      <button class="chip-btn mono active" data-baud="460800">460800</button>
+                      <button class="chip-btn mono" data-baud="468750">468750</button>
+                      <button class="chip-btn mono" data-baud="921600">921600</button>
+                      <button class="chip-btn mono" data-baud="1000000">1000000</button>
+                      <button class="chip-btn mono" data-baud="2000000">2000000</button>
+                    </div>
+                  </div>
+
+                  <div class="form-grid-2">
+                    <div class="field-col">
+                      <span class="tb-label">数据位 (Data Bits)</span>
+                      <select id="selDataBits" class="mono">
+                        <option value="8" selected>8</option>
+                        <option value="7">7</option>
+                        <option value="6">6</option>
+                        <option value="5">5</option>
+                      </select>
+                    </div>
+                    <div class="field-col">
+                      <span class="tb-label">停止位 (Stop Bits)</span>
+                      <select id="selStopBits" class="mono">
+                        <option value="1" selected>1</option>
+                        <option value="2">2</option>
+                      </select>
+                    </div>
+                    <div class="field-col">
+                      <span class="tb-label">校验位 (Parity)</span>
+                      <select id="selParity">
+                        <option value="none" selected>None (无校验)</option>
+                        <option value="even">Even (偶校验)</option>
+                        <option value="odd">Odd (奇校验)</option>
+                      </select>
+                    </div>
+                    <div class="field-col">
+                      <span class="tb-label">流控方式 (Flow Control)</span>
+                      <select id="selFlowCtrl">
+                        <option value="none" selected>None (无流控)</option>
+                        <option value="hardware">RTS/CTS (硬件流控)</option>
+                        <option value="software">XON/XOFF (软件流控)</option>
+                      </select>
+                    </div>
+                  </div>
+
+                  <div style="display:flex;align-items:center;gap:18px;padding-top:2px">
+                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                      <input type="checkbox" id="chkDtr" />
+                      <span>DTR 信号置高</span>
+                    </label>
+                    <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                      <input type="checkbox" id="chkRts" />
+                      <span>RTS 信号置高</span>
+                    </label>
+                  </div>
+                </div>
+
+                <!-- UDP Listener Settings -->
+                <div id="connUdpBox" style="display:none;flex-direction:column;gap:8px">
+                  <div class="field-col">
+                    <span class="tb-label">本地 UDP 绑定地址与端口 (用于 Wi-Fi / 以太网高速无线调参)</span>
+                    <input type="text" id="inpUdpAddr" class="mono" value="0.0.0.0:1347" placeholder="0.0.0.0:1347" />
+                  </div>
+                  <div class="tb-label" style="white-space:normal">
+                    开启监听后，下位机或无线透传模块直接向本机对应端口发送 JustFloat / FireWater 数据包即可实时绘波；收到首包后自动记忆下位机地址以支持反向发送指令。
+                  </div>
+                </div>
+
+                <!-- TCP Client Settings -->
+                <div id="connTcpBox" style="display:none;flex-direction:column;gap:8px">
+                  <div class="field-col">
+                    <span class="tb-label">远端 TCP 服务端地址与端口 (用于局域网网关或仿真器直连)</span>
+                    <input type="text" id="inpTcpAddr" class="mono" value="127.0.0.1:1347" placeholder="127.0.0.1:1347" />
+                  </div>
+                  <div class="tb-label" style="white-space:normal">
+                    作为 TCP Client 主动连接远端串口服务器、无线数传模块或软件在环 (SIL) 仿真器，无缝双向传输波形与控制指令。
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;gap:10px;padding-top:6px;border-top:1px solid var(--border)">
+                  <button class="btn btn-primary" id="btnConnect" style="height:34px;padding:0 22px;font-size:13px">
+                    <span class="led-dot" id="ledConnMain" style="background:#fff"></span>
+                    <span id="lblConnect">立即建立连接</span>
+                  </button>
+                  <button class="btn" id="btnConnJumpScope" style="height:34px">连接后切回示波页</button>
+                </div>
+              </div>
+            </div>
+
+            <div class="panel-card">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title">实时链路监控与接收保护</span>
+              </div>
+              <div style="padding:12px;display:flex;flex-direction:column;gap:12px">
+                <div class="link-stat-grid">
+                  <div class="link-stat-box">
+                    <div class="tb-label">当前状态</div>
+                    <div class="link-stat-val" id="connStatState">未连接</div>
+                  </div>
+                  <div class="link-stat-box">
+                    <div class="tb-label">实测帧率</div>
+                    <div class="link-stat-val mono" id="connStatHz">0 Hz</div>
+                  </div>
+                  <div class="link-stat-box">
+                    <div class="tb-label">接收带宽</div>
+                    <div class="link-stat-val mono" id="connStatKbps">0.0 KB/s</div>
+                  </div>
+                  <div class="link-stat-box">
+                    <div class="tb-label">缓冲帧 / 坏点拦截</div>
+                    <div class="link-stat-val mono" id="connStatFrames">0 / 0</div>
+                  </div>
+                </div>
+
+                <div class="form-grid-2" style="padding-top:4px;border-top:1px solid var(--border)">
+                  <div class="field-col" title="实时通信与本软件导出的 CSV 均自带微秒级 time_s 真实时基；此项仅在导入外部无时间列的纯数值旧 CSV 时作为推算兜底">
+                    <span class="tb-label">无时间列旧 CSV 兜底采样率 (Hz)</span>
+                    <input type="number" id="inpNominalHz" class="mono" value="1000" min="1" step="100" />
+                  </div>
+                  <div class="field-col" title="默认关闭以保留真实硬件毛刺；勾选后自动丢弃绝对值超过阈值的串口错位异常帧">
+                    <span class="tb-label">串口错位坏点拦截</span>
+                    <div style="display:flex;align-items:center;gap:8px;height:27px;min-width:0">
+                      <label style="display:flex;align-items:center;gap:5px;cursor:pointer;white-space:nowrap;flex-shrink:0">
+                        <input type="checkbox" id="chkConnSpikeFilter" />
+                        <span>启用拦截</span>
+                      </label>
+                      <input type="number" id="inpConnSpikeThresh" class="mono" value="1000000" style="flex:1;min-width:0" title="绝对值超过此阈值时丢弃该异常帧" />
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Right Column: VOFA+ Compatible Multi-Protocol Engine -->
+          <div class="conn-col">
+            <div class="panel-card">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title">数据解析协议引擎 (兼容 VOFA+ 三大标准协议)</span>
+                <span class="proto-tag mono" id="lblActiveProtoBadge">当前: JustFloat</span>
+              </div>
+              <div style="padding:12px;display:flex;flex-direction:column;gap:10px">
+                <div class="proto-list" id="protoCardsList">
+                  <div class="proto-card active" data-proto="justfloat">
+                    <div class="proto-hdr">
+                      <div class="proto-title"><span class="proto-radio"></span>JustFloat (IEEE-754 小端二进制浮点流)</div>
+                      <span class="proto-tag">高速电控首选</span>
+                    </div>
+                    <div class="tb-label" style="white-space:normal;line-height:1.45">
+                      每帧由连续 <code>float ch[N]</code> 紧跟固定 4 字节帧尾 <code>00 00 80 7F</code> 组成，带宽利用率极高（460800 波特率轻松跑 1kHz×10~27 通道）。内置<strong>二进制 + ASCII 混合分流器</strong>，下位机穿插打印参数辨识文本自动进入『终端』页。
+                    </div>
+                  </div>
+
+                  <div class="proto-card" data-proto="firewater">
+                    <div class="proto-hdr">
+                      <div class="proto-title"><span class="proto-radio"></span>FireWater (CSV 风格 printf 逗号明文协议)</div>
+                      <span class="proto-tag">零门槛调试</span>
+                    </div>
+                    <div class="tb-label" style="white-space:normal;line-height:1.45">
+                      直接兼容下位机 <code>printf("%f,%f,%f\n", a, b, c)</code> 或带前缀 <code>printf("foc: %f,%f\r\n", a, b)</code>，按换行符切帧；非数值提示信息同样自动分流至『终端』页。
+                    </div>
+                  </div>
+
+                  <div class="proto-card" data-proto="rawdata">
+                    <div class="proto-hdr">
+                      <div class="proto-title"><span class="proto-radio"></span>RawData (原始字节流 · 纯串口/网络助手)</div>
+                      <span class="proto-tag">纯文本 / HEX 监控</span>
+                    </div>
+                    <div class="tb-label" style="white-space:normal;line-height:1.45">
+                      不做浮点通道抽帧，将收到的字节流原样送入『终端』页显示，适合纯指令收发或底层报文排查。
+                    </div>
+                    <div id="rawHexOptRow" style="margin-top:7px;padding-top:6px;border-top:1px dashed var(--border);display:none">
+                      <label style="display:flex;align-items:center;gap:6px;cursor:pointer">
+                        <input type="checkbox" id="chkRawHex" />
+                        <span>以十六进制 HEX + ASCII 对照格式显示接收字节</span>
+                      </label>
+                    </div>
+                  </div>
+                </div>
+
+                <div style="display:flex;align-items:center;justify-content:space-between;margin-top:2px">
+                  <span class="tb-label" style="font-weight:600;color:var(--text-primary)">下位机 C 语言发送参考示例</span>
+                  <button class="btn" id="btnCopyProtoCode" style="height:22px;padding:0 8px;font-size:11px">
+                    <svg class="svg-ic" style="width:12px;height:12px"><use href="#ic-copy"/></svg>
+                    <span>复制 C 示例</span>
+                  </button>
+                </div>
+                <pre class="code-snippet-box mono" id="preProtoCode"></pre>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE 2: STATIC POST-ANALYSIS WORKBENCH (6-TAB MODE) ================= -->
+        <section class="page-view lab-page" id="page-lab">
+          <!-- Left Persistent Dataset Pool (Runs) -->
+          <aside class="anl-sidebar">
+            <div class="anl-sidebar-hdr">
+              <span class="panel-card-title">实验数据集池</span>
+              <span class="proto-tag mono" id="lblAnlRunCount">0 归档</span>
+            </div>
+            <div class="anl-grab-row">
+              <button class="btn" id="btnAnlGrabT1T2" title="截取示波器 [T1, T2] 游标选区存入分析库">+ 抓 T1~T2</button>
+              <button class="btn" id="btnAnlGrabFull" title="将当前示波器内存全部波形存为一条实验记录">+ 抓全缓冲</button>
+              <button class="btn" id="btnAnlImportCsv" title="直接导入外部历史 CSV 作为对比实验记录">+ 导入CSV</button>
+            </div>
+            <div class="anl-runs-list" id="anlRunsList"></div>
+          </aside>
+
+          <!-- Right 6-Tab Functional Analysis Workspace -->
+          <div class="anl-main">
+            <div class="anl-tabbar">
+              <div class="anl-tabs-row" id="anlTabBar">
+                <button class="anl-tab active" data-anl-tab="overlay">1. 多维叠图与对齐</button>
+                <button class="anl-tab" data-anl-tab="step">2. 阶跃整定 PK 表</button>
+                <button class="anl-tab" data-anl-tab="fft">3. 频谱谐波与 THD</button>
+                <button class="anl-tab" data-anl-tab="filter">4. 离线滤波器沙盒</button>
+                <button class="anl-tab" data-anl-tab="xy">5. X-Y 轨迹与外特性</button>
+                <button class="anl-tab" data-anl-tab="stats">6. 全通道统计总表</button>
+              </div>
+              <button class="btn" id="btnAnlExportPng" style="height:24px;flex-shrink:0" title="将当前分析视图波形与图例导出为高清 PNG">
+                <svg class="svg-ic" style="width:12px;height:12px"><use href="#ic-download"/></svg>
+                <span>导出分析图 PNG</span>
+              </button>
+            </div>
+
+            <!-- Tab 1: Multi-Run & Multi-Channel Overlay + Auto Alignment + Residual Diff -->
+            <div class="anl-pane active" data-anl-pane="overlay">
+              <div class="anl-toolbar">
+                <span class="tb-label">维度:</span>
+                <select id="anlSelScopeMode" style="width:176px">
+                  <option value="multi_run">同通道 · 多轮实验 PK</option>
+                  <option value="multi_ch">单实验 · 多通道因果叠放</option>
+                </select>
+                <select id="anlSelOverlayCh" style="width:156px"></select>
+                <span class="tb-label">量纲:</span>
+                <select id="anlSelNormMode" style="width:136px">
+                  <option value="raw">真实物理量纲</option>
+                  <option value="norm100">0~100% 归一化</option>
+                </select>
+                <div class="tb-sep"></div>
+                <span class="tb-label">对齐:</span>
+                <select id="anlSelAlignMode" style="width:152px">
+                  <option value="rising50">阶跃上升沿 50% 归零</option>
+                  <option value="threshold">首次越过阈值归零</option>
+                  <option value="peak">峰值时刻归零</option>
+                  <option value="manual">原始时基 / 纯手动</option>
+                </select>
+                <span id="anlWrapThresh" style="display:none;align-items:center;gap:4px">
+                  <span class="tb-label">阈值:</span>
+                  <input type="number" id="anlInpThresh" class="mono" value="500" step="any" style="width:72px" />
+                </span>
+                <button class="btn" id="btnAnlResetOffsets" style="height:25px" title="清零所有手动平移偏移量">复位偏移</button>
+                <div class="tb-sep"></div>
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer" title="实时计算前两条曲线的差值 (曲线1 - 曲线2) 与均方根误差">
+                  <input type="checkbox" id="anlChkDiff" />
+                  <span>Δ 差值曲线</span>
+                </label>
+                <span class="mono tb-label" id="anlLblDiffInfo" style="color:var(--accent)"></span>
+              </div>
+              <div class="anl-ch-row" id="anlMultiChRow" style="display:none"></div>
+              <div class="anl-canvas-box" style="flex:1">
+                <canvas id="canvasOverlay"></canvas>
+              </div>
+              <div class="anl-foot-hint">
+                滚轮缩放 X+Y  |  左轴刻度滚轮单缩 Y / 底轴刻度单缩 X  |  左键平移视口  |  按住 Shift + 左键直接拖拽当前焦点曲线微调 (Δt / Δy)  |  双击画布复位
+              </div>
+            </div>
+
+            <!-- Tab 2: Automated Step Response Tuning PK Table -->
+            <div class="anl-pane" data-anl-pane="step">
+              <div class="anl-toolbar">
+                <span class="tb-label">反馈响应通道:</span>
+                <select id="anlSelStepFbk" style="width:168px"></select>
+                <span class="tb-label">目标给定通道:</span>
+                <select id="anlSelStepRef" style="width:168px"></select>
+                <span class="tb-label">收敛误差带:</span>
+                <select id="anlSelSettleBand" style="width:116px">
+                  <option value="0.02">±2% 稳态带</option>
+                  <option value="0.05">±5% 稳态带</option>
+                </select>
+                <span class="tb-label" style="margin-left:auto">左侧勾选多条实验即可同表 PK 上升时间、超调量与调节时间</span>
+              </div>
+              <div class="anl-canvas-box" style="flex:5">
+                <canvas id="cvsAnlStep"></canvas>
+              </div>
+              <div class="table-scroll" style="flex:4;min-height:130px;max-height:none;border:1px solid var(--border);border-radius:4px;background:var(--bg-card)">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>实验数据集</th>
+                      <th>调参备注</th>
+                      <th>初值 → 稳态</th>
+                      <th>上升时间 tr (10%→90%)</th>
+                      <th>峰值时间 tp</th>
+                      <th>超调量 σ%</th>
+                      <th>调节时间 ts</th>
+                      <th>稳态纹波 P-P</th>
+                      <th>跟踪 RMSE</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyAnlStepPk" class="mono"></tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Tab 3: Windowed FFT, THD & Electrical Harmonic Order Diagnosis -->
+            <div class="anl-pane" data-anl-pane="fft">
+              <div class="anl-toolbar">
+                <span class="tb-label">分析通道:</span>
+                <select id="anlSelFftCh" style="width:168px"></select>
+                <span class="tb-label">加窗类型:</span>
+                <select id="anlSelFftWin" style="width:156px">
+                  <option value="hann">Hann 汉宁窗 (通用)</option>
+                  <option value="flattop">Flat-Top 平顶窗 (精测幅值)</option>
+                  <option value="rect">Rectangular 矩形窗</option>
+                </select>
+                <span class="tb-label">纵轴刻度:</span>
+                <select id="anlSelFftScale" style="width:112px">
+                  <option value="linear">线性幅值</option>
+                  <option value="db">对数 dB</option>
+                </select>
+                <span class="tb-label">极对数 Pn:</span>
+                <input type="number" id="anlInpPoles" class="mono" value="7" min="1" max="64" style="width:58px" />
+                <span class="tb-label" style="margin-left:auto">自动标注 1fe / 2fe / 5fe / 6fe / 7fe 电谐波特征阶次</span>
+              </div>
+              <div class="anl-kpi-grid" id="anlFftKpis"></div>
+              <div style="flex:1;min-height:0;display:flex;gap:10px">
+                <div class="anl-canvas-box" style="flex:1">
+                  <canvas id="cvsAnlFft"></canvas>
+                </div>
+                <div class="anl-side-card" style="width:280px">
+                  <div class="section-hdr">主谐波尖峰与电控成因诊断</div>
+                  <div class="anl-peaks-scroll" id="anlFftPeaksList"></div>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 4: Offline Digital Filter Sandbox & MCU C-Code Generator -->
+            <div class="anl-pane" data-anl-pane="filter">
+              <div class="anl-toolbar">
+                <span class="tb-label">待滤波通道:</span>
+                <select id="anlSelFilterCh" style="width:168px"></select>
+                <span class="tb-label">滤波器拓扑:</span>
+                <select id="anlSelFilterType" style="width:214px">
+                  <option value="iir1">一阶低通 IIR LPF (MCU常用)</option>
+                  <option value="biquad_lpf">二阶巴特沃斯 Butterworth LPF</option>
+                  <option value="movavg">滑动平均窗 Moving Average</option>
+                  <option value="notch">二阶陷波器 Notch (抑特定频点)</option>
+                  <option value="zerophase">零相位双向 FiltFilt (离线真值基准)</option>
+                </select>
+                <span class="tb-label" id="anlLblFilterParam">截止频率 fc (Hz)</span>
+                <input type="range" id="anlRngCutoff" min="1" max="450" value="25" style="width:146px;accent-color:var(--accent)" />
+                <span class="mono" id="anlValFilterParam" style="min-width:60px;font-weight:600;color:var(--accent)">25 Hz</span>
+              </div>
+              <div style="flex:1;min-height:0;display:flex;gap:10px">
+                <div class="anl-canvas-box" style="flex:1">
+                  <canvas id="cvsAnlFilter"></canvas>
+                </div>
+                <div class="anl-side-card" style="width:320px">
+                  <div class="section-hdr">纹波衰减与群延迟评估</div>
+                  <div id="anlFilterMetrics" style="display:flex;flex-direction:column;gap:6px;padding:8px;background:var(--bg-panel);border:1px solid var(--border);border-radius:4px"></div>
+                  <div style="display:flex;align-items:center;justify-content:space-between;margin-top:4px">
+                    <span class="section-hdr">自动生成下位机 C 代码</span>
+                    <button class="btn" id="btnAnlCopyFilterCode" style="height:22px;padding:0 8px;font-size:11px">
+                      <svg class="svg-ic" style="width:12px;height:12px"><use href="#ic-copy"/></svg>
+                      <span>复制 C 代码</span>
+                    </button>
+                  </div>
+                  <pre class="code-snippet-box mono" id="anlPreFilterCode" style="flex:1;max-height:none"></pre>
+                </div>
+              </div>
+            </div>
+
+            <!-- Tab 5: X-Y Phase Portrait / Outer Envelope -->
+            <div class="anl-pane" data-anl-pane="xy">
+              <div class="anl-toolbar">
+                <span class="tb-label">X 轴通道:</span>
+                <select id="anlSelXyX" style="width:176px"></select>
+                <span class="tb-label">Y 轴通道:</span>
+                <select id="anlSelXyY" style="width:176px"></select>
+                <label style="display:inline-flex;align-items:center;gap:5px;cursor:pointer">
+                  <input type="checkbox" id="anlChkXyEqual" checked />
+                  <span>1:1 等比例正圆坐标与包络圆 (适用 Vd-Vq 电压圆 / Iα-Iβ 电流圆 / 观测器李萨如)</span>
+                </label>
+              </div>
+              <div style="flex:1;min-height:0;display:flex;gap:10px">
+                <div class="anl-canvas-box" style="flex:1">
+                  <canvas id="cvsAnlXy"></canvas>
+                </div>
+                <div class="anl-side-card" style="width:265px" id="anlXyStats"></div>
+              </div>
+            </div>
+
+            <!-- Tab 6: Full-Channel Statistical Matrix -->
+            <div class="anl-pane" data-anl-pane="stats">
+              <div class="anl-toolbar">
+                <span class="panel-card-title">当前焦点实验全通道统计总表</span>
+                <span class="proto-tag mono" id="anlLblStatsTitle">--</span>
+              </div>
+              <div class="table-scroll" style="flex:1;max-height:none;border:1px solid var(--border);border-radius:4px;background:var(--bg-card)">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th>通道名称</th>
+                      <th>均值 Mean</th>
+                      <th>有效值 RMS</th>
+                      <th>最小值 Min</th>
+                      <th>最大值 Max</th>
+                      <th>峰峰值 P-P</th>
+                      <th>标准差 StdDev</th>
+                    </tr>
+                  </thead>
+                  <tbody id="tbodyAnlFullStats" class="mono"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE 3: CHANNELS & MATH CONFIG ================= -->
+        <section class="page-view config-page" id="page-config">
+          <!-- Presets & Spike Filter Bar -->
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <div style="display:flex;align-items:center;gap:12px">
+                <span class="panel-card-title">预设档案与采样过滤配置</span>
+                <span class="tb-label">当前预设: <strong id="lblProfileName" style="color:var(--text-primary)">--</strong></span>
+              </div>
+              <div style="display:flex;align-items:center;gap:10px">
+                <label style="display:flex;align-items:center;gap:5px;cursor:pointer" title="默认关闭以保留真实硬件异常；勾选后拦截绝对值超阈值的错位飞点">
+                  <input type="checkbox" id="chkSpikeFilter" />
+                  <span>启用串口坏点过滤</span>
+                </label>
+                <span class="tb-label">阈值:</span>
+                <input type="number" id="inpSpikeThresh" class="mono" style="width:95px" value="1000000" />
+                <div class="tb-sep"></div>
+                <button class="btn" id="btnSavePreset">保存为预设</button>
+                <button class="btn" id="btnLoadPreset">加载预设</button>
+                <button class="btn" id="btnResetDefault">恢复默认27通道</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Modular Right-Drawer Widget Configurator -->
+          <div class="panel-card" id="cardWidgetConfig">
+            <div class="panel-card-hdr">
+              <span class="panel-card-title">右侧栏控件配置</span>
+              <button class="btn btn-primary" id="btnAddDrawerWidget" style="height:25px">
+                <svg class="svg-ic" style="width:13px;height:13px"><use href="#ic-plus"/></svg>
+                <span>新增控件</span>
+              </button>
+            </div>
+            <div class="wcfg-workbench">
+              <div class="wcfg-list-col" id="widgetInstList"></div>
+              <div class="wcfg-inspector-col" id="widgetInspectorPane"></div>
+            </div>
+          </div>
+
+          <!-- Plot Windows Manager -->
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <span class="panel-card-title">示波器分屏窗口列表</span>
+              <button class="btn" id="btnAddPlotConfig">
+                <svg class="svg-ic"><use href="#ic-plus"/></svg>
+                <span>新建波形窗</span>
+              </button>
+            </div>
+            <div style="padding:8px 12px;display:flex;flex-wrap:wrap;gap:8px" id="plotPanelsBar"></div>
+          </div>
+
+          <!-- Hardware Channel Mapper -->
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <span class="panel-card-title">硬件数据通道绑定表 (CH0 .. CHn)</span>
+              <button class="btn" id="btnAddHwChannel">
+                <svg class="svg-ic"><use href="#ic-plus"/></svg>
+                <span>增加硬件通道</span>
+              </button>
+            </div>
+            <div class="table-scroll">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width:62px">通道</th>
+                    <th style="width:52px">绘波</th>
+                    <th>显示名称</th>
+                    <th style="width:136px">公式变量简称</th>
+                    <th style="width:76px">单位</th>
+                    <th style="width:82px" title="仅对示波器曲线绘制高度乘算该系数，不影响图例读数、侧栏控件、公式与导出数值">显示增益</th>
+                    <th style="width:58px">颜色</th>
+                    <th style="width:176px">绑定波形窗口</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyChannels"></tbody>
+              </table>
+            </div>
+          </div>
+
+          <!-- Real-Time PC Derived Math Expressions -->
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <div>
+                <span class="panel-card-title">上位机实时派生公式通道 (M0 .. Mn)</span>
+                <div class="tb-label" style="margin-top:2px">
+                  支持引用变量简称或 CH0..CHn；支持 ^ 与 sqrt, abs, sin, cos, atan2, hypot, maximum, minimum, clip, lpf(x,0.05), movavg(x,20), rms_win(x,50), diff(x,0.001)
+                </div>
+              </div>
+              <div style="display:flex;gap:6px">
+                <button class="btn" data-math-tpl="mod">+ 模板: 电压调制比</button>
+                <button class="btn" data-math-tpl="pwr">+ 模板: 逆变电功率</button>
+                <button class="btn" data-math-tpl="lpf">+ 模板: Iq低通滤波</button>
+                <button class="btn btn-primary" id="btnAddMathChannel">新建公式通道</button>
+              </div>
+            </div>
+            <div class="table-scroll" style="max-height:240px">
+              <table class="data-table">
+                <thead>
+                  <tr>
+                    <th style="width:54px">ID</th>
+                    <th style="width:52px">绘波</th>
+                    <th style="width:160px">通道名称</th>
+                    <th style="width:120px">简称</th>
+                    <th>实时向量计算表达式</th>
+                    <th style="width:78px">单位</th>
+                    <th style="width:56px">颜色</th>
+                    <th style="width:170px">绑定波形窗口</th>
+                    <th style="width:58px">操作</th>
+                  </tr>
+                </thead>
+                <tbody id="tbodyMath"></tbody>
+              </table>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE 4: TERMINAL, BOOKMARKS & AI MCP ================= -->
+        <section class="page-view terminal-page" id="page-terminal">
+          <div class="term-col">
+            <div class="panel-card" style="flex:4;min-height:0">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title">状态跳变与故障自动书签 (点击任意条目即刻定位到对应毫秒波形)</span>
+              </div>
+              <div class="bookmark-list" id="bookmarkList"></div>
+            </div>
+
+            <div class="panel-card" style="flex:6;min-height:0">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title">串口 ASCII 文本终端 & 电机参数辨识报告 (自动从 JustFloat 流中无损分流)</span>
+                <div style="display:flex;gap:5px">
+                  <button class="btn" data-quick-tx="ID&#10;">发送 ID (启动辨识)</button>
+                  <button class="btn" data-quick-tx="ID?&#10;">发送 ID? (读Rs/Ls/磁链)</button>
+                  <button class="btn btn-danger-outline" data-quick-tx="C">发送 C (中止/清故障)</button>
+                  <button class="btn" id="btnClearConsole">清屏</button>
+                </div>
+              </div>
+              <div class="console-output mono" id="consoleOutput"></div>
+              <div style="padding:8px;border-top:1px solid var(--border);display:flex;gap:6px">
+                <input type="text" id="inpSerialTx" class="mono" style="flex:1" placeholder="输入串口 ASCII 指令并回车发送..." />
+                <button class="btn btn-primary" id="btnSendTx">发送</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="term-col">
+            <!-- Top 50%: One-Click AI / MCP Prompt Box -->
+            <div class="panel-card" style="flex:1;min-height:0">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title" id="lblMcpCenterTitle">AI / MCP 原生直连配置</span>
+                <div style="display:flex;align-items:center;gap:8px">
+                  <span class="status-pill mono" id="lblMcpBadge" style="padding:2px 8px">127.0.0.1:18580 在线</span>
+                  <button class="btn btn-primary" id="btnCopyAiPrompt" style="height:24px;padding:0 10px">
+                    <svg class="svg-ic" style="width:12px;height:12px"><use href="#ic-copy"/></svg>
+                    <span>复制安装指令</span>
+                  </button>
+                </div>
+              </div>
+              <div style="padding:10px 12px;display:flex;flex-direction:column;gap:8px;flex:1;min-height:0">
+                <div style="font-size:12.5px;line-height:1.5;color:var(--text-secondary)">
+                  单文件内置 MCP 服务（零外部依赖）。复制下方指令发给 Claude Code、Cursor、Antigravity 或 Codex 即可自动连接：
+                </div>
+                <textarea class="prompt-box mono" id="txtAiPrompt" readonly></textarea>
+              </div>
+            </div>
+
+            <!-- Bottom 50%: Clean Structured 16-Tool Table -->
+            <div class="panel-card" style="flex:1;min-height:0">
+              <div class="panel-card-hdr">
+                <span class="panel-card-title" id="lblMcpSecHdr">已内置的 16 个双向工具接口</span>
+                <span class="tb-label">支持界面实时同步与无头离线分析</span>
+              </div>
+              <div class="table-scroll" style="flex:1;min-height:0;max-height:none">
+                <table class="data-table">
+                  <thead>
+                    <tr>
+                      <th style="width:215px">接口名称</th>
+                      <th>核心用途说明</th>
+                    </tr>
+                  </thead>
+                  <tbody id="mcpToolsList"></tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- ================= PAGE 5: ABOUT, GUIDE & CONTACT ================= -->
+        <section class="page-view config-page" id="page-about">
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <div style="display:flex;align-items:center;gap:9px">
+                <img src="favicon.png" alt="FluxScope" style="width:20px;height:20px;border-radius:4px" />
+                <span class="panel-card-title">FluxScope — 电控高速示波与静态分析平台</span>
+              </div>
+              <span class="proto-tag mono">v2.0.0 · MIT</span>
+            </div>
+            <div class="about-lead">
+              面向电机控制（FOC 矢量控制、无感观测器、高速伺服、电调与数字电源）研发调参打造的原生态桌面软件。基于 Rust 与 Tauri 构建，单文件零依赖启动，完整兼容 VOFA+ JustFloat、FireWater、RawData 通信协议，集成多窗口高速实时示波、向量派生公式、14 类可编程右侧仪表控件、六合一后端静态分析台以及 16 接口原生 AI / MCP 双向服务。
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <span class="panel-card-title">交互与功能操作指南</span>
+            </div>
+            <div class="about-grid-2">
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr"><span>1. 示波画布缩放与平移</span></div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">画布内滚轮</span><span class="about-kv-val">同时等比缩放 X 时间轴与 Y 幅值轴</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">坐标轴区滚轮</span><span class="about-kv-val">在左轴或底轴刻度区滚动（或按住 Shift），单独缩放单轴</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">左键按住拖拽</span><span class="about-kv-val">上下左右自由平移视口（横向拖拽时自动切为固定时基）</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">双击 / 自适应</span><span class="about-kv-val">全屏复位最佳量程，并自动过滤异常错位飞点</span></div>
+                </div>
+              </div>
+
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr"><span>2. 时基跟随 · 双游标 · 截图导出</span></div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">时基跟随栏</span><span class="about-kv-val">底部开关跟随最新，拖动滑块设定最新帧落点（10%~100%）</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">双游标 T1/T2</span><span class="about-kv-val">拖拽虚线测量时间差与频率，支持选区导出带精确时基的 CSV</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">右键另存图片</span><span class="about-kv-val">画布右键另存图像时，自动包含窗口标题与全部变量颜色图例</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">全局快捷键</span><span class="about-kv-val">Space 暂停或继续采集回放，Tab 收起或展开右侧仪表栏</span></div>
+                </div>
+              </div>
+
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr"><span>3. 六合一后端静态分析台（分析页）</span></div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">实验数据集池</span><span class="about-kv-val">即开即载当前缓冲快照，支持抓选区、抓全缓冲与外部 CSV 归档</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">多维叠图对齐</span><span class="about-kv-val">支持自动归零、差值曲线解算，以及按住 Shift+左键拖曲线微调</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">阶跃与频谱</span><span class="about-kv-val">多轮阶跃上升/超调/调节时间对比，加窗 FFT/THD 与谐波诊断</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">离线滤波沙盒</span><span class="about-kv-val">实时对比 5 类滤波器纹波衰减与群延迟，一键生成下位机 C 代码</span></div>
+                </div>
+              </div>
+
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr"><span>4. 显示增益 · 仪表控件 · AI 联调</span></div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">独立显示增益</span><span class="about-kv-val">通道页可设绘波乘数，仅缩放曲线高度，不影响任何读数与导出</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">向量派生公式</span><span class="about-kv-val">支持四则运算、三角函数、低通滤波、滑动平均与微分实时解算</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">多优先级控件</span><span class="about-kv-val">14 类侧栏仪表支持上下拖拽排序，可设多条优先级条件超限变色</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">原生 MCP 服务</span><span class="about-kv-val">终端页复制指令发给主流 AI 客户端，即可双向读写配置与波形</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="panel-card">
+            <div class="panel-card-hdr">
+              <span class="panel-card-title">作者信息 · 开源仓库 · 交流反馈</span>
+            </div>
+            <div class="about-grid-3">
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr"><span>作者与维护者</span></div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">开发者</span><span class="about-kv-val">ChengJia (@ChengJiaAI)</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">方向</span><span class="about-kv-val">电控软件算法工程师</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">GitHub 主页</span><span class="about-kv-val">https://github.com/ChengJiaAI</span></div>
+                </div>
+              </div>
+
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr">
+                  <span>联系邮箱与问题反馈</span>
+                  <button class="btn" data-copy-text="ccdccd999@163.com" style="height:21px;padding:0 8px;font-size:11px">复制邮箱</button>
+                </div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">常用邮箱</span><span class="about-kv-val">ccdccd999@163.com</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">问题与建议</span><span class="about-kv-val">欢迎通过 GitHub Issues 提交反馈或发起 PR 共建</span></div>
+                </div>
+              </div>
+
+              <div class="wcfg-card">
+                <div class="wcfg-card-hdr">
+                  <span>开源地址与本地数据</span>
+                  <button class="btn" data-copy-text="https://github.com/ChengJiaAI/FluxScope" style="height:21px;padding:0 8px;font-size:11px">复制仓库链接</button>
+                </div>
+                <div class="about-kv-list">
+                  <div class="about-kv-row"><span class="about-kv-key">开源仓库</span><span class="about-kv-val">https://github.com/ChengJiaAI/FluxScope</span></div>
+                  <div class="about-kv-row"><span class="about-kv-key">数据存储</span><span class="about-kv-val">默认位于 %APPDATA%\FluxScope（同级新建 portable_data 目录即切便携模式）</span></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <!-- Shared Resizable Right Telemetry Drawer (Visible on `示波` & `通道` pages!) -->
+      <div class="drawer-width-splitter" id="drawerWidthSplitter" title="左右拖动调节侧栏宽度"></div>
+      <aside class="right-drawer" id="rightDrawer">
+        <div class="drawer-source-bar">
+          <span class="tb-label">取值:</span>
+          <select id="selDrawerSource" style="width:90px" title="选择右侧控件跟随的时间基准">
+            <option value="latest">最新</option>
+            <option value="hover">参考线</option>
+            <option value="t1">T1</option>
+            <option value="t2">T2</option>
+          </select>
+          <div class="tb-spacer"></div>
+          <span class="drawer-time-tag mono" id="lblDrawerTime">最新</span>
+        </div>
+        <div class="drawer-widgets-canvas" id="drawerWidgetsCanvas"></div>
+      </aside>
+    </div>
+
+    <!-- Clean Bottom Instrument Status Strip (Left: Telemetry Stats | Right: Timebase Follow Dock) -->
+    <footer class="statusbar">
+      <div class="sb-items">
+        <span id="sbSource">数据源: 未连接</span>
+        <span class="mono" id="sbFrames">缓冲: 0 帧</span>
+        <span class="mono" id="sbRate">采样率: 1000 Hz</span>
+        <span class="mono" id="sbSpikes">坏点拦截: 0</span>
+      </div>
+      <div class="timebase-dock" id="bottomTimebaseDock">
+        <button class="btn is-active" id="btnFollowToggle" style="height:21px;padding:0 8px;font-size:11px" title="开启后时间轴实时跟随最新帧；关闭后时间轴固定（滚轮始终可自由缩放）">
+          <span class="follow-live-dot" id="dotFollowLive"></span>
+          <span>跟随最新</span>
+        </button>
+        <div class="tb-sep" style="height:13px"></div>
+        <div class="follow-slider-wrap" title="拖动调节最新一帧在示波器中的水平位置（限制 10% ~ 100%，双击切换 100% / 50%）">
+          <span class="tb-label">最新位置</span>
+          <div class="follow-track" id="followAnchorTrack">
+            <div class="follow-min-zone"></div>
+            <div class="follow-mid-tick"></div>
+            <div class="follow-fill" id="followAnchorFill"></div>
+            <div class="follow-thumb" id="followAnchorThumb"></div>
+          </div>
+          <span class="mono follow-pct-lbl" id="lblFollowAnchorPct">100%</span>
+        </div>
+        <div class="tb-sep" style="height:13px"></div>
+        <button class="btn" id="btnScale5s" style="height:21px;padding:0 8px;font-size:11px" title="最左侧到最新一帧显示最近 5 秒（总窗口宽度随最新帧位置自动换算）">最近 5s</button>
+        <div class="scale-custom-group" title="自定义最左侧到最新一帧的秒数（点击『最近』或修改数字回车生效）">
+          <button class="btn scale-custom-btn" id="btnScaleCustom">最近</button>
+          <input type="number" id="inpScaleCustom" class="mono scale-custom-inp" min="0.01" max="36000" step="any" value="10" />
+          <span class="scale-custom-unit">s</span>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+  <!-- Add Widget Picker Modal -->
+  <div class="modal-backdrop" id="widgetPickerModal">
+    <div class="modal-box" style="width:760px;max-width:94vw">
+      <div class="modal-hdr">
+        <span>新增控件</span>
+        <button class="btn btn-icon" id="btnCloseWidgetPicker">✕</button>
+      </div>
+      <div class="modal-body" style="padding:12px">
+        <div class="wcfg-picker-grid" id="widgetPickerGrid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Popover 1: Widget Usage & Applicable Variables Guide (`?`) -->
+  <div class="wcfg-float-pop" id="widgetGuidePop">
+    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:6px;color:var(--accent)">
+      <span id="wgPopTitle">控件说明</span>
+      <button class="btn" id="btnCloseWgPop" style="height:20px;padding:0 6px;font-size:11px">关闭</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div><strong>显示效果：</strong><span id="wgPopEffect" style="color:var(--text-primary)"></span></div>
+      <div><strong>可绑定的物理量 / 典型用途：</strong><br/><span id="wgPopVars" style="color:var(--text-secondary)"></span></div>
+    </div>
+  </div>
+
+  <!-- Popover 2: Expression Syntax Guide (`?`) -->
+  <div class="wcfg-float-pop" id="exprHelpPop">
+    <div style="display:flex;justify-content:space-between;align-items:center;font-weight:700;margin-bottom:6px;color:var(--accent)">
+      <span>表达式语法</span>
+      <button class="btn" id="btnCloseExprPop" style="height:20px;padding:0 6px;font-size:11px">关闭</button>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:5px">
+      <div><strong>变量：</strong><code class="mono">val</code>（当前值）、<code class="mono">CH0 ~ CHn</code>（硬件通道）、<code class="mono">M0 ~ Mn</code>（公式通道）</div>
+      <div><strong>符号：</strong><code class="mono">&gt;</code> <code class="mono">&gt;=</code> <code class="mono">&lt;</code> <code class="mono">&lt;=</code> <code class="mono">==</code> <code class="mono">!=</code> · 逻辑 <code class="mono">&amp;&amp;</code> <code class="mono">||</code> · 按位 <code class="mono">(CH7 &amp; 0x04) != 0</code></div>
+      <div><strong>函数：</strong><code class="mono">abs(x)</code>、<code class="mono">hypot(x, y)</code>、<code class="mono">sqrt(x)</code>、<code class="mono">max(a,b)</code>、<code class="mono">min(a,b)</code></div>
+      <div style="margin-top:2px"><strong>点击填入示例：</strong><br/>
+        <span class="wcfg-tpl-chip mono" data-tpl="val >= 80 || CH6 == 6">val &gt;= 80 || CH6 == 6</span>
+        <span class="wcfg-tpl-chip mono" data-tpl="CH26 < 48 || CH26 > 84">CH26 &lt; 48 || CH26 &gt; 84</span>
+        <span class="wcfg-tpl-chip mono" data-tpl="abs(CH0 - CH1) > 200">abs(CH0 - CH1) &gt; 200</span>
+        <span class="wcfg-tpl-chip mono" data-tpl="(CH7 & 0x01) != 0">(CH7 &amp; 0x01) != 0</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast" id="toastBox"></div>
+
+  <script src="oscilloscope.js"></script>
+  <script src="widgets.js"></script>
+  <script src="analysis.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>

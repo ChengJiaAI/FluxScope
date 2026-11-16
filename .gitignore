@@ -1,0 +1,21 @@
+# Rust / Tauri build outputs
+/src-tauri/target/
+/src-tauri/WixTools/
+/src-tauri/gen/
+**/*.rs.bk
+*.pdb
+
+# Local staged binaries & portable runtime data
+/release/
+/portable_data/
+*.old
+
+# Node / Web tooling
+/node_modules/
+npm-debug.log*
+
+# OS & Editor metadata
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

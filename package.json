@@ -1,0 +1,12 @@
+{
+  "name": "fluxscope",
+  "version": "2.0.0",
+  "description": "FluxScope — High-Performance Motor Control Oscilloscope & Static Post-Analysis Workbench with Native AI/MCP Integration",
+  "author": "ChengJia <ccdccd999@163.com>",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ChengJiaAI/FluxScope.git"
+  },
+  "private": false
+}
