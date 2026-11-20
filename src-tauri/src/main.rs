@@ -324,7 +324,7 @@ fn submit_screenshot_data(
     Ok(out_path.to_string_lossy().into_owned())
 }
 
-/// Native Win32 Open/Save File Dialog (zero external dependency, runs on dedicated STA thread)
+/// Native OS Open/Save File Dialog (zero external dependency, runs off UI thread)
 #[tauri::command]
 fn pick_file_dialog(mode: String, default_name: Option<String>, filter_type: Option<String>) -> Option<String> {
     #[cfg(target_os = "windows")]
@@ -332,11 +332,98 @@ fn pick_file_dialog(mode: String, default_name: Option<String>, filter_type: Opt
         let handle = std::thread::spawn(move || win32_file_dialog(&mode, default_name.as_deref(), filter_type.as_deref()));
         handle.join().ok().flatten()
     }
-    #[cfg(not(target_os = "windows"))]
+    #[cfg(target_os = "macos")]
     {
-        let _ = (mode, default_name, filter_type);
-        None
+        let handle = std::thread::spawn(move || macos_file_dialog(&mode, default_name.as_deref(), filter_type.as_deref()));
+        handle.join().ok().flatten()
     }
+    #[cfg(all(not(target_os = "windows"), not(target_os = "macos")))]
+    {
+        let handle = std::thread::spawn(move || linux_file_dialog(&mode, default_name.as_deref(), filter_type.as_deref()));
+        handle.join().ok().flatten()
+    }
+}
+
+#[cfg(target_os = "macos")]
+fn macos_file_dialog(mode: &str, default_name: Option<&str>, filter_type: Option<&str>) -> Option<String> {
+    let mut cmd = std::process::Command::new("/usr/bin/osascript");
+    let ftype = filter_type.unwrap_or("csv");
+    if mode == "save" {
+        let def_name = default_name.unwrap_or(if ftype == "png" { "export.png" } else { "export.csv" });
+        cmd.arg("-e")
+            .arg("on run argv")
+            .arg("-e")
+            .arg("POSIX path of (choose file name with prompt \"保存文件\" default name (item 1 of argv))")
+            .arg("-e")
+            .arg("end run")
+            .arg("--")
+            .arg(def_name);
+    } else {
+        cmd.arg("-e")
+            .arg("on run argv")
+            .arg("-e")
+            .arg("set ftype to item 1 of argv")
+            .arg("-e")
+            .arg("if ftype is \"png\" then")
+            .arg("-e")
+            .arg("POSIX path of (choose file of type {\"png\", \"public.png\"} with prompt \"选择 PNG 图片\")")
+            .arg("-e")
+            .arg("else if ftype is \"csv\" then")
+            .arg("-e")
+            .arg("POSIX path of (choose file of type {\"csv\", \"txt\", \"public.comma-separated-values-text\", \"public.plain-text\"} with prompt \"选择 CSV 数据文件\")")
+            .arg("-e")
+            .arg("else")
+            .arg("-e")
+            .arg("POSIX path of (choose file with prompt \"选择文件\")")
+            .arg("-e")
+            .arg("end if")
+            .arg("-e")
+            .arg("end run")
+            .arg("--")
+            .arg(ftype);
+    }
+    let out = cmd.output().ok()?;
+    if !out.status.success() {
+        return None;
+    }
+    let mut path = String::from_utf8_lossy(&out.stdout).trim().to_string();
+    if path.is_empty() {
+        return None;
+    }
+    if mode == "save" {
+        let ext = if ftype == "png" { ".png" } else { ".csv" };
+        if !path.to_lowercase().ends_with(ext) {
+            path.push_str(ext);
+        }
+    }
+    Some(path)
+}
+
+#[cfg(all(not(target_os = "windows"), not(target_os = "macos")))]
+fn linux_file_dialog(mode: &str, default_name: Option<&str>, filter_type: Option<&str>) -> Option<String> {
+    let mut cmd = std::process::Command::new("zenity");
+    cmd.arg("--file-selection");
+    if mode == "save" {
+        cmd.arg("--save").arg("--confirm-overwrite");
+        if let Some(dn) = default_name {
+            cmd.arg(format!("--filename={}", dn));
+        }
+    }
+    match filter_type.unwrap_or("csv") {
+        "png" => {
+            cmd.arg("--file-filter=PNG Image (*.png) | *.png");
+        }
+        "csv" => {
+            cmd.arg("--file-filter=CSV Data (*.csv, *.txt) | *.csv *.txt");
+        }
+        _ => {}
+    }
+    let out = cmd.output().ok()?;
+    if !out.status.success() {
+        return None;
+    }
+    let path = String::from_utf8_lossy(&out.stdout).trim().to_string();
+    if path.is_empty() { None } else { Some(path) }
 }
 
 #[cfg(target_os = "windows")]

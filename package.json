@@ -8,5 +8,12 @@
     "type": "git",
     "url": "https://github.com/ChengJiaAI/FluxScope.git"
   },
+  "scripts": {
+    "tauri": "tauri",
+    "build": "tauri build"
+  },
+  "devDependencies": {
+    "@tauri-apps/cli": "^2.12.4"
+  },
   "private": false
 }

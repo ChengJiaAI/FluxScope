@@ -1,0 +1,139 @@
+name: Build & Release (Windows + macOS)
+
+on:
+  push:
+    tags:
+      - "v*"
+  workflow_dispatch:
+    inputs:
+      release_tag:
+        description: "Upload built installers to this Release tag (e.g. v2.0.0; leave empty for artifact-only build)"
+        required: false
+        type: string
+        default: ""
+      build_windows:
+        description: "Also build Windows x64 installer & portable zip (always runs on tag push)"
+        required: false
+        type: boolean
+        default: false
+
+permissions:
+  contents: write
+
+jobs:
+  build-macos:
+    name: Build macOS Universal (.dmg)
+    runs-on: macos-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Rust stable (Apple Silicon + Intel targets)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: aarch64-apple-darwin,x86_64-apple-darwin
+
+      - name: Rust dependency cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "src-tauri -> target"
+
+      - name: Install Tauri CLI
+        run: npm install --no-audit --no-fund
+
+      - name: Build Universal macOS App & DMG
+        run: npx tauri build --ci --target universal-apple-darwin --bundles dmg,app
+
+      - name: Stage macOS Universal DMG
+        id: stage_dmg
+        run: |
+          VER=$(node -p "require('./src-tauri/tauri.conf.json').version")
+          RAW_DMG=$(ls src-tauri/target/universal-apple-darwin/release/bundle/dmg/*.dmg | head -n 1)
+          mkdir -p dist-macos
+          OUT_DMG="dist-macos/FluxScope_${VER}_macOS_universal.dmg"
+          cp "$RAW_DMG" "$OUT_DMG"
+          ls -lh "$OUT_DMG"
+          echo "dmg_path=$OUT_DMG" >> "$GITHUB_OUTPUT"
+
+      - name: Upload macOS DMG Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: FluxScope-macOS-Universal
+          path: ${{ steps.stage_dmg.outputs.dmg_path }}
+
+      - name: Attach macOS DMG to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_TAG: ${{ inputs.release_tag != '' && inputs.release_tag || github.ref_name }}
+        run: |
+          if ! gh release view "$TARGET_TAG" >/dev/null 2>&1; then
+            gh release create "$TARGET_TAG" --title "FluxScope $TARGET_TAG" --generate-notes
+          fi
+          gh release upload "$TARGET_TAG" "${{ steps.stage_dmg.outputs.dmg_path }}" --clobber
+
+  build-windows:
+    name: Build Windows x64 (.exe + Portable .zip)
+    if: startsWith(github.ref, 'refs/tags/v') || inputs.build_windows == true
+    runs-on: windows-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Rust stable (MSVC x64)
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          targets: x86_64-pc-windows-msvc
+
+      - name: Rust dependency cache
+        uses: Swatinem/rust-cache@v2
+        with:
+          workspaces: "src-tauri -> target"
+
+      - name: Install Tauri CLI
+        run: npm install --no-audit --no-fund
+
+      - name: Build Windows NSIS Installer & Standalone Binary
+        run: npx tauri build --ci --bundles nsis
+
+      - name: Stage Windows Installer & Portable Zip
+        id: stage_win
+        shell: pwsh
+        run: |
+          $ver = (Get-Content src-tauri/tauri.conf.json | ConvertFrom-Json).version
+          New-Item -ItemType Directory -Force -Path dist-win | Out-Null
+          $setup = Get-ChildItem "src-tauri/target/release/bundle/nsis/*-setup.exe" | Select-Object -First 1
+          $setupOut = "dist-win/FluxScope_${ver}_x64-setup.exe"
+          Copy-Item $setup.FullName $setupOut -Force
+          $zipOut = "dist-win/FluxScope_${ver}_x64_Portable.zip"
+          Compress-Archive -Path "src-tauri/target/release/FluxScope.exe" -DestinationPath $zipOut -Force
+          Get-ChildItem dist-win
+
+      - name: Upload Windows Artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: FluxScope-Windows-x64
+          path: dist-win/*
+
+      - name: Attach Windows Assets to GitHub Release
+        if: startsWith(github.ref, 'refs/tags/v') || inputs.release_tag != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TARGET_TAG: ${{ inputs.release_tag != '' && inputs.release_tag || github.ref_name }}
+        shell: pwsh
+        run: |
+          gh release view "$env:TARGET_TAG" *> $null
+          if ($LASTEXITCODE -ne 0) {
+            gh release create "$env:TARGET_TAG" --title "FluxScope $env:TARGET_TAG" --generate-notes
+          }
+          gh release upload "$env:TARGET_TAG" dist-win/* --clobber

@@ -686,7 +686,22 @@ impl TelemetryEngine {
     pub fn list_serial_ports() -> Vec<BTreeMap<String, String>> {
         let mut out = Vec::new();
         if let Ok(ports) = serialport::available_ports() {
+            #[cfg(target_os = "macos")]
+            let cu_names: std::collections::HashSet<String> = ports
+                .iter()
+                .filter(|p| p.port_name.starts_with("/dev/cu."))
+                .map(|p| p.port_name.clone())
+                .collect();
+
             for p in ports {
+                // On macOS, prefer call-out (/dev/cu.*) devices over blocking /dev/tty.* duplicates
+                #[cfg(target_os = "macos")]
+                if let Some(suffix) = p.port_name.strip_prefix("/dev/tty.") {
+                    if cu_names.contains(&format!("/dev/cu.{}", suffix)) {
+                        continue;
+                    }
+                }
+
                 let mut m = BTreeMap::new();
                 let desc = match &p.port_type {
                     serialport::SerialPortType::UsbPort(info) => {

@@ -6,6 +6,7 @@
 
   <p>
     <a href="https://github.com/ChengJiaAI/FluxScope/releases"><img src="https://img.shields.io/badge/Release-v2.0.0-2563EB?style=flat-square" alt="Release" /></a>
+    <img src="https://img.shields.io/badge/Platform-Windows%20%7C%20macOS-334155?style=flat-square" alt="Windows | macOS" />
     <img src="https://img.shields.io/badge/Core-Rust%20%2B%20Tauri%20v2-0EA5E9?style=flat-square" alt="Rust + Tauri v2" />
     <img src="https://img.shields.io/badge/Protocols-VOFA%2B%20JustFloat%20%7C%20FireWater%20%7C%20RawData-10B981?style=flat-square" alt="Protocols" />
     <img src="https://img.shields.io/badge/AI%20Native-16%20MCP%20Tools-8B5CF6?style=flat-square" alt="16 MCP Tools" />
@@ -57,21 +58,27 @@
 ## 快速上手 | Quick Start
 
 ### 方式一：直接下载安装包或绿色版（推荐）
-前往右侧 [**Releases**](https://github.com/ChengJiaAI/FluxScope/releases) 页面按习惯任选其一：
-- **标准安装版（`FluxScope_2.0.0_x64-setup.exe`）**：双击一键安装，自动生成桌面与开始菜单快捷方式，支持标准卸载。
-- **绿色便携单文件版（`FluxScope_2.0.0_x64_Portable.zip`）**：免安装解压即用，仅单个 `FluxScope.exe`（Windows 10 / 11 自带 WebView2 运行时，零环境配置；在同级新建 `portable_data` 空文件夹即可将配置与切片随 U 盘携带）。
+前往右侧 [**Releases**](https://github.com/ChengJiaAI/FluxScope/releases) 页面按平台选择：
+- **Windows 标准安装版（`FluxScope_2.0.0_x64-setup.exe`）**：双击一键安装，自动生成桌面与开始菜单快捷方式，支持标准卸载。
+- **Windows 绿色便携单文件版（`FluxScope_2.0.0_x64_Portable.zip`）**：免安装解压即用，仅单个 `FluxScope.exe`（Windows 10 / 11 自带 WebView2 运行时，零环境配置；在同级新建 `portable_data` 空文件夹即可将配置与切片随 U 盘携带）。
+- **macOS 通用安装镜像（`FluxScope_2.0.0_macOS_universal.dmg`）**：由 GitHub Actions 官方纯净构建，同时原生支持 **Apple Silicon (M1–M4)** 与 **Intel** 芯片。
+  > **macOS 首次打开提示**：由于个人开源项目未购买苹果商业签名证书，拖入 `/Applications` 后若首次启动提示「无法验证开发者 / 已损坏」，在终端执行一行命令解除隔离标记即可正常打开：
+  > ```bash
+  > sudo xattr -rd com.apple.quarantine /Applications/FluxScope.app
+  > ```
 
 ### 方式二：从源码编译
-环境要求：**Rust (1.78+, MSVC x64)** + Windows SDK / Visual Studio C++ Build Tools。
+环境要求：**Rust (1.78+)** + **Node.js (18+)**（Windows 需装 MSVC Build Tools；macOS 需装 Xcode Command Line Tools）。
 
-```powershell
+```bash
 git clone https://github.com/ChengJiaAI/FluxScope.git
-cd FluxScope/src-tauri
+cd FluxScope
 
-# 编译单文件独立发行版（同时内置 GUI 与 --mcp 服务）
-cargo build --release --bin FluxScope
+# 安装 Tauri 打包工具并一键构建当前平台安装包
+npm install
+npx tauri build
 ```
-编译产物位于 `src-tauri/target/release/FluxScope.exe`。
+（Windows 亦可直接进入 `src-tauri` 执行 `cargo build --release --bin FluxScope` 生成单文件 `target/release/FluxScope.exe`。）
 
 ---
 
